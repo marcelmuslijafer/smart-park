@@ -19,7 +19,8 @@ Issues can be created under the issue tab by clicking on the **new issue** butto
 Every issue should have a title.
 
 For issue titles please use the following format:
-\<module\>: \<description\>
+
+**\<module\>: \<description\>**
 
 For example, an issue for setting up a local environment to work with devices would have a title like:
 - devices: setup local environment
@@ -41,10 +42,10 @@ The project board is used to manage issue progress. You can access the project b
 
 There are four progress sections:
 
-1. Todo 	    - work hasn't been started yet, 
-2. In Progress  - actively being worked on,
-3. Pull Request - waiting to be merged to master branch,
-4. Done		    - successfuly compeleted.
+1. **Todo** 	    - work hasn't been started yet, 
+2. **In Progress**  - actively being worked on,
+3. **Pull Request** - waiting to be merged to master branch,
+4. **Done**		    - successfuly compeleted.
 
 Issues can be created directly on the project board: 
 1. Click on the **+ Add item** button.
@@ -65,7 +66,7 @@ When resolving issues you will probably want to make changes to the repository.
 Changes to the master branch can only be made through pull requests. A pull request is a request to merge branches.
 
 Here are the steps for creating a pull request:
-1. Create a separate branch in your local repository (git checkout -b \<branch-name\>). The branch name should be equal to the issue title you're resolving with each word separated using a **-**. For example: 'devices-setup-local-environment'.
+1. Create a separate branch in your local repository **(git checkout -b \<branch-name\>)**. The branch name should be equal to the issue title you're resolving with each word separated using '**-**'. **For example: 'devices-setup-local-environment'**.
 2. Before commiting any changes, make sure you are on the right branch.
 3. Commit changes.
 4. Push the branch to the remote repository (git push origin \<branch-name\>).
