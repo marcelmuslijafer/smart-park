@@ -4,6 +4,8 @@ Thank you for investing your time in contributing to this project!
 
 In this guide you will get an overview of the contribution workflow from opening an issue, creating a pull request, reviewing, and mergin the PR.
 
+---
+
 ## Issues
 
 GitHub issues allows users to track and manage software development tasks, bugs and other issues related to a software project.
@@ -17,7 +19,7 @@ Issues can be created under the issue tab by clicking on the **new issue** butto
 Every issue should have a title.
 
 For issue titles please use the following format:
-<module>: <description>
+\<module\>: \<description\>
 
 For example, an issue for setting up a local environment to work with devices would have a title like:
 - devices: setup local environment
@@ -30,6 +32,8 @@ Issues can be created without an assignee.
 To finish creating an issue press the **Submit new issue** button.
 
 Issues can also be created in the project board.
+
+---
 
 ## Project board
 
@@ -52,6 +56,8 @@ Issues can be created directly on the project board:
 
 Please keep the project board up-to-date.
 
+---
+
 ## Making changes & resolving issues
 
 When resolving issues you will probably want to make changes to the repository.
@@ -59,10 +65,10 @@ When resolving issues you will probably want to make changes to the repository.
 Changes to the master branch can only be made through pull requests. A pull request is a request to merge branches.
 
 Here are the steps for creating a pull request:
-1. Create a separate branch in your local repository (git checkout -b <branch-name>). The branch name should be equal to the issue title you're resolving with each word separated using a **-**. For example: 'devices-setup-local-environment'.
+1. Create a separate branch in your local repository (git checkout -b \<branch-name\>). The branch name should be equal to the issue title you're resolving with each word separated using a **-**. For example: 'devices-setup-local-environment'.
 2. Before commiting any changes, make sure you are on the right branch.
 3. Commit changes.
-4. Push the branch to the remote repository (git push origin <branch-name>).
+4. Push the branch to the remote repository (git push origin \<branch-name\>).
 5. Open a pull request on github to merge the pushed branch with master.
 6. Add a reviewer for your pull request. The reviewer should be a person that is also working on the module of the issue or the team lead.
 7. Wait for approval from the reviewer  for your pull request.
