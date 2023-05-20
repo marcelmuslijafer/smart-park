@@ -1,0 +1,22 @@
+POST
+https://161.53.19.19:56443/m2m/data
+credentials -> IoTGrupa9:IoTProject123
+headers -> Content-Type: application/vnd.ericsson.simple.input.hierarchical+json;version=1.0
+body
+	{
+		"deviceId": "Grupa9GatewayGroup1",
+		"header": {
+			"timeStamp": 1488222858000
+		},
+		"body": {
+			"Grupa9UltrazvucniSenzor": {
+				"Grupa9Proximity": 23.45
+			}
+		}
+	}
+
+GET
+https://161.53.19.19:56443/m2m/data\?resourceSpec\=Grupa9Proximity\&t1\=1488222855000\&t2\=1488222857000
+credentials -> IoTGrupa9:IoTProject123
+headers -> Accept: application/vnd.ericsson.m2m.output+json;version=1.1
+
