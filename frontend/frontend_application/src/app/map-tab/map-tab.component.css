@@ -8,13 +8,13 @@
   width: 100%;
 }
 
-
 /* ===================================== */
 /* =============== TITLE =============== */
 /* ===================================== */
 .rectangle {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 16px;
   border-radius: 10px;
   background-color: #e1f5fe;
@@ -25,7 +25,7 @@
   margin-right: 16px;
   color: #01579b;
   font-weight: bold;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
 }
 
 .circles {

@@ -9,8 +9,8 @@ import { FreeParkingSpaces } from './map-tab.types';
   styleUrls: ['./map-tab.component.css'],
 })
 export class MapTabComponent implements OnInit, OnDestroy {
-  blueCircleNumber;
-  greenCircleNumber;
+  blueCircleNumber: number;
+  greenCircleNumber: number;
 
   FreeParkingSpacesSubscription: Subscription;
 
