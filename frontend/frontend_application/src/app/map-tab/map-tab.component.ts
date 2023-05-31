@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapTabService } from './map-tab.service';
 import { Subscription } from 'rxjs';
-import { FreeParkingSpaces } from './map-tab.types';
+import { ParkingSpace } from './map-tab.types';
 
 @Component({
   selector: 'app-map-tab',
@@ -9,8 +9,8 @@ import { FreeParkingSpaces } from './map-tab.types';
   styleUrls: ['./map-tab.component.css'],
 })
 export class MapTabComponent implements OnInit, OnDestroy {
-  blueCircleNumber: number;
-  greenCircleNumber: number;
+  blueCircleNumber: number = 0;
+  greenCircleNumber: number = 0;
 
   FreeParkingSpacesSubscription: Subscription;
 
@@ -18,13 +18,20 @@ export class MapTabComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.FreeParkingSpacesSubscription = this.mapTabService
-      .getFreeParkingSpacesSubject()
-      .subscribe((noOfSpaces: FreeParkingSpaces) => {
-        this.blueCircleNumber = noOfSpaces.normalParkingSpacesCount;
-        this.greenCircleNumber = noOfSpaces.disabledParkingSpacesCount;
+      .getParkingSpacesSubject()
+      .subscribe((parkingSpace: ParkingSpace[]) => {
+        parkingSpace.forEach((ps) => {
+          if (!ps.taken) {
+            if (ps.disabled) {
+              this.blueCircleNumber++;
+            } else {
+              this.greenCircleNumber++;
+            }
+          }
+        });
       });
 
-    this.mapTabService.getNumberOfFreeParkingSpaces();
+    this.mapTabService.getParkingSpaces();
   }
 
   ngOnDestroy(): void {

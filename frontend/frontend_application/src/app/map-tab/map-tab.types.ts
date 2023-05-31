@@ -1,11 +1,6 @@
-export interface FreeParkingSpaces {
-  normalParkingSpacesCount: number;
-  disabledParkingSpacesCount: number;
-}
-
-interface Marker {
+export interface ParkingSpace {
   lat: number;
   lng: number;
-  label?: string;
-  draggable: boolean;
+  disabled: boolean;
+  taken: boolean;
 }
