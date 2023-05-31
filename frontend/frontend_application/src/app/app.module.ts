@@ -13,6 +13,7 @@ import { NavigationTabsComponent } from './navigation-tabs/navigation-tabs.compo
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { StatisticsTabComponent } from './statistics-tab/statistics-tab.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { StatisticsTabComponent } from './statistics-tab/statistics-tab.componen
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    NgChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

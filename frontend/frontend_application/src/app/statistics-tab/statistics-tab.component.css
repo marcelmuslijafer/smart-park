@@ -1,0 +1,15 @@
+canvas {
+  max-height: 500px;
+  max-width: 1000px;
+}
+
+.chartWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.chartAreaWrapper {
+    flex-shrink: 0;
+    padding: 10px 10px 10px 10px
+}
+
