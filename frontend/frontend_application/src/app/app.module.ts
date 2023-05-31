@@ -9,9 +9,17 @@ import { MapTabComponent } from './map-tab/map-tab.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
+import { NavigationTabsComponent } from './navigation-tabs/navigation-tabs.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent, MapTabComponent],
+  declarations: [
+    AppComponent,
+    NotFoundComponent,
+    MapTabComponent,
+    NavigationTabsComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -19,6 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     HttpClientModule,
     MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
