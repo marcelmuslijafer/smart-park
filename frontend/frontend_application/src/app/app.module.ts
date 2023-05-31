@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NavigationTabsComponent } from './navigation-tabs/navigation-tabs.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { StatisticsTabComponent } from './statistics-tab/statistics-tab.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     NotFoundComponent,
     MapTabComponent,
     NavigationTabsComponent,
+    StatisticsTabComponent,
   ],
   imports: [
     BrowserModule,
