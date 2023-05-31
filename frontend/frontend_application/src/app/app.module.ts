@@ -15,6 +15,8 @@ import { NavigationTabsComponent } from './navigation-tabs/navigation-tabs.compo
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    LeafletModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
