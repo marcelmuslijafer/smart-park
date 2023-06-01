@@ -21,8 +21,8 @@ float readDistance() {
   float distance = duration * SOUND_SPEED / 2;
 
   // Prints the distance in the Serial Monitor
-  Serial.print("Distance (cm): ");
-  Serial.println(distance);
+  // Serial.print("Distance (cm): ");
+  // Serial.println(distance);
 
   return distance;
 }
