@@ -14,6 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { NavigationTabsComponent } from './navigation-tabs/navigation-tabs.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { StatisticsTabComponent } from './statistics-tab/statistics-tab.component';
+import { NgChartsModule } from 'ng2-charts';
+import { MatSelectModule } from '@angular/material/select'
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
@@ -24,6 +28,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MapTabComponent,
     NavigationTabsComponent,
     OSMComponent,
+    StatisticsTabComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,6 +40,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatIconModule,
     MatToolbarModule,
     LeafletModule,
+    NgChartsModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,0 +1,30 @@
+canvas {
+  max-height: 500px;
+  max-width: 1000px;
+}
+
+.chartWrapper {
+  padding: 20px 20px 20px 20px;
+}
+
+.chartAreaWrapper {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+canvas {
+  max-width: 500px;
+  max-height: 400px;
+}
+
+mat-form-field {
+  max-width: 200px;
+  align-self: center;
+  justify-self: center;
+}
+
+.status {
+  align-self: center;
+  justify-self: center;
+}
