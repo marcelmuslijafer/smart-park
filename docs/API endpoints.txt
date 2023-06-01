@@ -1,22 +1,71 @@
+1. KREIRANJE INICIJALNIH PODATAKA ZA SENZOR
 POST
 https://161.53.19.19:56443/m2m/data
 credentials -> IoTGrupa9:IoTProject123
 headers -> Content-Type: application/vnd.ericsson.simple.input.hierarchical+json;version=1.0
-body
-	{
-		"deviceId": "Grupa9GatewayGroup1",
-		"header": {
-			"timeStamp": 1488222858000
-		},
-		"body": {
-			"Grupa9UltrazvucniSenzor": {
-				"Grupa9Proximity": 23.45
-			}
-		}
-	}
+body:
+{
+    "deviceId": "Grupa9GatewayGroup1",
+    "header": {
+        "timeStamp": 1488222858005
+    },
+    "body": {
+        "Grupa9UltrazvucniSenzor1": {
+            "Grupa9Latitude": 15.2,
+            "Grupa9Longitude": 45.7,
+            "Grupa9ForDisabled": 0
+        }
+    }
+}
 
+
+2. KREIRANJE STATUSA SENZORA
+POST
+https://161.53.19.19:56443/m2m/data
+credentials -> IoTGrupa9:IoTProject123
+headers -> Content-Type: application/vnd.ericsson.simple.input.hierarchical+json;version=1.0
+body:
+{
+    "deviceId": "Grupa9GatewayGroup1",
+    "header": {
+        "timeStamp": 1488222858006
+    },
+    "body": {
+        "Grupa9UltrazvucniSenzor1": {
+            "Grupa9Status": 0
+        }
+    }
+}
+
+STATUSI
+0 -> free
+1 -> taken
+2 -> reserved
+
+
+3. DOHVAĆANJE LATITUDE SENZORA - vraća listu pa treba uzeti zadnju vrijednost iz liste
 GET
-https://161.53.19.19:56443/m2m/data\?resourceSpec\=Grupa9Proximity\&t1\=1488222855000\&t2\=1488222857000
+https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor1&resourceSpec=Grupa9Latitude
 credentials -> IoTGrupa9:IoTProject123
 headers -> Accept: application/vnd.ericsson.m2m.output+json;version=1.1
 
+
+4. DOHVAĆANJE LONGITUDE SENZORA - vraća listu pa treba uzeti zadnju vrijednost iz liste
+GET
+https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor1&resourceSpec=Grupa9Longitude
+credentials -> IoTGrupa9:IoTProject123
+headers -> Accept: application/vnd.ericsson.m2m.output+json;version=1.1
+
+
+5. DOHVAĆANJE JE LI MJESTO SENZORA INVALIDSKO - vraća listu pa treba uzeti zadnju vrijednost iz liste
+GET
+https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor1&resourceSpec=Grupa9ForDisabled
+credentials -> IoTGrupa9:IoTProject123
+headers -> Accept: application/vnd.ericsson.m2m.output+json;version=1.1
+
+
+6. DOHVAĆANJE ZADNJEG OČITANJA SENZORA AKO JE ONO OČITANJE STATUSA - ako zadnje očitanje nije očitanje statusa ovo vraća prazan rezultat, na prikladan način handleat taj slučaj
+GET
+https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor2&resourceSpec=Grupa9Status&latestNCount=1
+credentials -> IoTGrupa9:IoTProject123
+headers -> Accept: application/vnd.ericsson.m2m.output+json;version=1.1
