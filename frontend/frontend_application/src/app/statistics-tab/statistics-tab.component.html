@@ -1,9 +1,24 @@
 <div class="chartWrapper">
+  <div class="chartAreaWrapper">
+    <mat-form-field>
+      <mat-label>Choose a day</mat-label>
+      <mat-select
+        [(ngModel)]="selectedOption"
+        (selectionChange)="onDayChanged($event.value)"
+      >
+        <mat-option *ngFor="let day of daysOfWeek" [value]="day">
+          {{ day }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <canvas
       baseChart
       [data]="dataset"
       [type]="'bar'"
       [options]="options"
-      class="chartAreaWrapper"
     ></canvas>
+    <div class="status">
+      {{ occupancyStatus }}
+    </div>
+  </div>
 </div>

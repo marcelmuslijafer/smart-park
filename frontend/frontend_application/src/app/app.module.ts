@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { StatisticsTabComponent } from './statistics-tab/statistics-tab.component';
 import { NgChartsModule } from 'ng2-charts';
+import { MatSelectModule } from '@angular/material/select'
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { NgChartsModule } from 'ng2-charts';
     MatIconModule,
     MatToolbarModule,
     NgChartsModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent],
