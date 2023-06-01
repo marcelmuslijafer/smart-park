@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { OSMComponent } from './map-tab/osm/osm.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MapTabComponent } from './map-tab/map-tab.component';
 import { FormsModule } from '@angular/forms';
@@ -17,12 +19,15 @@ import { NgChartsModule } from 'ng2-charts';
 import { MatSelectModule } from '@angular/material/select'
 import { MatFormFieldModule } from '@angular/material/form-field'
 
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+
 @NgModule({
   declarations: [
     AppComponent,
     NotFoundComponent,
     MapTabComponent,
     NavigationTabsComponent,
+    OSMComponent,
     StatisticsTabComponent,
   ],
   imports: [
@@ -34,6 +39,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    LeafletModule,
     NgChartsModule,
     MatSelectModule,
     MatFormFieldModule

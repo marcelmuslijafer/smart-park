@@ -4,6 +4,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  height: 10vh;
+  background-color: #0277bd;
 }
 
 .bottom-navigation button {
@@ -20,4 +22,8 @@
 
 .bottom-navigation button:not(:last-child) {
   margin-right: 16px;
+}
+
+.mat-icon {
+  transform: scale(1.5);
 }
