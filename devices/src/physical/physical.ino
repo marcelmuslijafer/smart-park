@@ -2,6 +2,7 @@
 #include "proximity_sensor.h"
 #include "led.h"
 #include "ntp.h"
+#include "mqtt.h"
 
 void setup() {
   Serial.begin(115200);      // Starts the serial communication
@@ -9,21 +10,24 @@ void setup() {
   // initLeds();
   connectToWiFi(wifiSsid, wifiPassword); // set wifi data in http.h
   configTime(0, 0, ntpServer);
-  registerParkingSpot();
+  // registerParkingSpot();
+  connectToMqttBroker();
 }
 
-void loop() {
-  int free = isParkingSpotFree();
+void loop() 
+{
+  mqttLoop();
+  // int free = isParkingSpotFree();
 
-  if (!free) {
-    turnLedOff(GREEN_LED);
-    turnLedOn(RED_LED);
-  } else {
-    turnLedOff(RED_LED);
-    turnLedOn(GREEN_LED);
-  }
+  // if (!free) {
+  //   turnLedOff(GREEN_LED);
+  //   turnLedOn(RED_LED);
+  // } else {
+  //   turnLedOff(RED_LED);
+  //   turnLedOn(GREEN_LED);
+  // }
 
-  storeParkingSpotStatus(free);
+  // storeParkingSpotStatus(free);
 
-  delay(10000);
+  delay(100);
 }
