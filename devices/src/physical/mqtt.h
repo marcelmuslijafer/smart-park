@@ -3,12 +3,12 @@
 
 const char* mqttServer = "161.53.19.19";
 const int mqttPort = 56883;
-const char* mqttTopic = "grupa9/senzor1/status";
+const char* mqttTopic = "grupa9/senzor1/reserved";
 
 void mqttCallback(char*, byte*, unsigned int);
 
 void connectToMqttBroker();
 
-void mqttLoop();
+String getMqttMessage();
 
 #endif

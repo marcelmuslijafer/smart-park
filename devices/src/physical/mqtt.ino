@@ -3,15 +3,21 @@
 
 #include "mqtt.h"
 
+String receivedPayload;
+
 void mqttCallback(char* topic, byte* payload, unsigned int length)
 {
+  receivedPayload = "";
   Serial.print("Received message on topic:");
   Serial.println(topic);
 
   Serial.print("Message: ");
 
   for (int i = 0; i < length; i++)
+  {
     Serial.print((char) payload[i]);
+    receivedPayload += (char) payload[i];
+  }
 
   Serial.println();
 }
@@ -40,7 +46,8 @@ void connectToMqttBroker()
   }
 }
 
-void mqttLoop()
+String getMqttMessage()
 {
   client.loop();
+  return receivedPayload;
 }
