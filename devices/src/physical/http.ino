@@ -65,5 +65,9 @@ void storeParkingSpotStatus(int status) {
   String serializedData;
   serializeJson(doc, serializedData);
 
+  String pretty;
+  serializeJsonPretty(doc, pretty);
+  Serial.println(pretty);
+
   postData(serializedData);
 }

@@ -3,6 +3,6 @@
 
 const char* ntpServer = "pool.ntp.org";
 
-unsigned long getTime();
+unsigned long long getTime();
 
 #endif
