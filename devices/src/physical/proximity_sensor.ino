@@ -23,7 +23,7 @@ float readDistance() {
   return distance;
 }
 
-int isParkingSpotFree()
+bool isParkingSpotFree()
 {
   bool free = readDistance() > MINIMAL_PROXIMITY ? true : false;
 
@@ -31,7 +31,7 @@ int isParkingSpotFree()
   delay(1000);
 
   if (!free && readDistance() < MINIMAL_PROXIMITY)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }

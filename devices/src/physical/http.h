@@ -1,8 +1,8 @@
 #ifndef HTTP_H
 #define HTTP_H
 
-const char* wifiSsid = "SSID";      // your network SSID (name of wifi network)
-const char* wifiPassword = "PASS";    // your network password
+const char* wifiSsid = "Potkrovlje";      // your network SSID (name of wifi network)
+const char* wifiPassword = "PotsuKMaraK";    // your network password
 
 const char* platformUsername = "IoTGrupa9";
 const char* platformPassword = "IoTProject123";
