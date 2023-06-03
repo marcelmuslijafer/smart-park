@@ -28,7 +28,7 @@ void loop()
     turnLedOff(GREEN_LED);
     turnLedOn(RED_LED);
 
-    if (currentSpotFree != previousSpotFree)
+    if ((currentSpotFree != previousSpotFree) || sentReserved)
     {
       storeParkingSpotStatus(SPOT_TAKEN);
       previousSpotFree = currentSpotFree;
@@ -55,7 +55,7 @@ void loop()
         turnLedOff(RED_LED);
         turnLedOn(GREEN_LED);
 
-        if (currentSpotFree != previousSpotFree)
+        if ((currentSpotFree != previousSpotFree) || sentReserved)
         {
           storeParkingSpotStatus(SPOT_FREE);
           previousSpotFree = currentSpotFree;
