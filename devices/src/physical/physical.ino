@@ -36,14 +36,14 @@ void loop()
   }
   else
   {
-    if (mqttMessage == "2" && !sentReserved)
+    if (mqttMessage == "reserve!" && !sentReserved)
     {
       turnLedOff(GREEN_LED);
       ledBlink(RED_LED);
       storeParkingSpotStatus(SPOT_RESERVED);
       sentReserved = true;
     } 
-    else if (mqttMessage == "2")
+    else if (mqttMessage == "reserve!")
     {
       turnLedOff(GREEN_LED);
       ledBlink(RED_LED);
