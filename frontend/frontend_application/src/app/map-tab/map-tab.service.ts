@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class MapTabService {
-  private LOCAL_DEV = true;
+  private LOCAL_DEV = false;
   private apiUrl = 'http://localhost:3000/';
   private shouldContinue: boolean = true;
 
@@ -42,7 +42,7 @@ export class MapTabService {
 
   /****************************************************/
   async getParkingSpaces() {
-    if (!this.LOCAL_DEV) {
+    if (this.LOCAL_DEV) {
       this.parkingSpacesSubject.next(this.dummyFreeParkingSpaces);
       return;
     }

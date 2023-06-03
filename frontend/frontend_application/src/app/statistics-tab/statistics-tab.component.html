@@ -11,13 +11,17 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div *ngIf="loadingSpinnerData" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
     <canvas
       baseChart
       [data]="dataset"
       [type]="'bar'"
       [options]="options"
+      *ngIf="!loadingSpinnerData"
     ></canvas>
-    <div class="status">
+    <div class="status" *ngIf="!loadingSpinnerData">
       {{ occupancyStatus }}
     </div>
   </div>

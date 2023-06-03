@@ -16,6 +16,8 @@ export class StatisticsTabComponent implements OnInit, OnDestroy {
   daysOfWeek: any;
   selectedOption: string = 'Monday';
   occupancyStatus: string = '';
+  loadingSpinnerData = false;
+  LoadingSpinnerSubscription: Subscription;
 
   constructor(private statisticsService: StatisticsService) {}
 
@@ -24,6 +26,12 @@ export class StatisticsTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.LoadingSpinnerSubscription = this.statisticsService
+      .getLoadingSpinnerSubject()
+      .subscribe((value) => {
+        this.loadingSpinnerData = value;
+      });
+
     this.dataSetSubscription = this.statisticsService
       .getParkingSpaceStatisticsSubject()
       .subscribe(
@@ -37,7 +45,7 @@ export class StatisticsTabComponent implements OnInit, OnDestroy {
       .subscribe((occupancyStatus: string) => {
         this.occupancyStatus = occupancyStatus;
       });
-    this.statisticsService.getNumberOfFreeParkingSpaces('start');
+    this.statisticsService.getNumberOfFreeParkingSpaces('Monday');
     this.options = this.statisticsService.getCanvasOptions();
     this.daysOfWeek = this.statisticsService.getDaysOfWeek();
   }

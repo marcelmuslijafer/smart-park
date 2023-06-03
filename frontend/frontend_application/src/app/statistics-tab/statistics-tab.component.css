@@ -28,3 +28,27 @@ mat-form-field {
   align-self: center;
   justify-self: center;
 }
+
+
+.spinner-container {
+  align-self: center;
+  justify-self: center;
+  top: 50%;
+  left: -40px; /* Prilagodite vrijednost prema potrebi */
+  transform: translateY(-50%);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #1e88e5; /* Promijenjena boja u plavu */
+  border-top-color: #01579b; /* Promijenjena boja u tamnoplavu */
+  border-radius: 50%;
+  animation: spinner-animation 1s linear infinite;
+}
+
+@keyframes spinner-animation {
+  to {
+    transform: rotate(360deg);
+  }
+}
