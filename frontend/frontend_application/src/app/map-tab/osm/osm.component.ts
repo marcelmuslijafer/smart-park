@@ -1,10 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, NgZone } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import * as Leaflet from 'leaflet';
 
-import { blueIcon, redIcon, greenIcon } from './markers';
+import { blueIcon, redIcon, greenIcon, yellowIcon } from './markers';
 import { MapTabService } from '../map-tab.service';
 import { Subscription } from 'rxjs';
 import { ParkingSpace } from '../map-tab.types';
+import { ReservationInfoModalComponent } from './reservation-info-modal/reservation-info-modal.component';
+import { ConfirmReservationModalComponent } from './confirm-reservation-modal/confirm-reservation-modal.component';
 
 @Component({
   selector: 'app-osm',
@@ -18,7 +21,11 @@ export class OSMComponent implements OnInit, OnDestroy {
 
   parkingSpacesSubject: Subscription;
 
-  constructor(private mapTabService: MapTabService) {}
+  constructor(
+    private zone: NgZone,
+    private mapTabService: MapTabService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.parkingSpacesSubject = this.mapTabService
@@ -26,13 +33,20 @@ export class OSMComponent implements OnInit, OnDestroy {
       .subscribe((parkingSpaces: ParkingSpace[]) => {
         for (let ps of parkingSpaces) {
           let markerIcon = redIcon;
-          console.log("tu")
-          if (!ps.taken) {
+          console.log('tu');
+          if (ps.reserved) {
+            markerIcon = yellowIcon;
+          } else if (!ps.taken) {
             markerIcon = ps.disabled ? blueIcon : greenIcon;
           }
 
           this.layers.push(
-            Leaflet.marker({ lat: ps.lat, lng: ps.lng }, { icon: markerIcon })
+            Leaflet.marker(
+              { lat: ps.lat, lng: ps.lng },
+              { icon: markerIcon }
+            ).on('click', (e) => {
+              this.zone.run(() => this.onMarkerClick(ps));
+            })
           );
         }
       });
@@ -54,6 +68,70 @@ export class OSMComponent implements OnInit, OnDestroy {
     maxZoom: 22,
     center: { lat: 45.800896, lng: 15.970451 },
   };
+
+  onMarkerClick(parkingSpace: ParkingSpace): void {
+    if (parkingSpace.taken) {
+      console.log('Mjesto je popunjeno i ne može se rezervirati!');
+      this.openInfoModal('Mjesto je popunjeno i ne može se rezervirati!');
+      return;
+    }
+
+    if (parkingSpace.reserved) {
+      console.log('Mjesto je već rezervirano!');
+      this.openInfoModal('Mjesto je već rezervirano!');
+      return;
+    }
+
+    console.log('Rezerviraj senzor: ', parkingSpace.id);
+    this.openConfirmationModal(
+      'Želite li rezervirati parkirno mjesto?',
+      parkingSpace.id
+    );
+
+    return;
+  }
+
+  async openConfirmationModal(content: string, parkingSpaceId: string) {
+    const dialogRef = this.dialog.open(ConfirmReservationModalComponent, {
+      height: 'auto',
+      data: {
+        title: 'Informacije',
+        content: content,
+        returnData: {
+          parkingSpaceId: parkingSpaceId,
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (returnedData) => {
+      if (returnedData) {
+        console.log('Rezerviraj mi: ', parkingSpaceId);
+        // let result = await this.amenitiesService.deleteAmenityById(
+        //   returnedData.amenityId
+        // );
+
+        // if (result) {
+        //   this.openInfoModal('Sadržaj uspješno obrisan.');
+        //   this.amenitiesService.getAmenities();
+        // } else {
+        //   this.openInfoModal('Nismo uspjeli obrisati sadržaj.');
+        // }
+      } else {
+        console.log('Otkazana rezervacija.');
+      }
+    });
+  }
+
+  openInfoModal(content: string): void {
+    console.log('Otvaram');
+    const dialogRef = this.dialog.open(ReservationInfoModalComponent, {
+      width: '400px',
+      data: {
+        title: 'Informacije',
+        content: content,
+      },
+    });
+  }
 
   onMapReady($event: Leaflet.Map) {
     this.map = $event;

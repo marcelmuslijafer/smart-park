@@ -20,8 +20,11 @@ export class MapTabComponent implements OnInit, OnDestroy {
     this.FreeParkingSpacesSubscription = this.mapTabService
       .getParkingSpacesSubject()
       .subscribe((parkingSpace: ParkingSpace[]) => {
+        this.blueCircleNumber = 0;
+        this.greenCircleNumber = 0;
+
         parkingSpace.forEach((ps) => {
-          if (!ps.taken) {
+          if (!ps.taken && !ps.reserved) {
             if (ps.disabled) {
               this.blueCircleNumber++;
             } else {

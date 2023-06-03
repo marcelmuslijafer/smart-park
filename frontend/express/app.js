@@ -4,6 +4,10 @@ var axios = require("axios");
 const app = express();
 const port = 3000;
 
+const cors = require("cors");
+
+app.use(cors());
+
 app.get("/", (req, res) => {
   const httpsAgent = new https.Agent({
     rejectUnauthorized: false,
@@ -11,18 +15,15 @@ app.get("/", (req, res) => {
   axios.defaults.httpsAgent = httpsAgent;
 
   axios
-    .get(
-      "https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor2&resourceSpec=Grupa9Status&latestNCount=1",
-      {
-        headers: {
-          accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
-        },
-        auth: {
-          username: "IoTGrupa9",
-          password: "IoTProject123",
-        },
-      }
-    )
+    .get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor2&resourceSpec=Grupa9Status&latestNCount=1", {
+      headers: {
+        accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+      },
+      auth: {
+        username: "IoTGrupa9",
+        password: "IoTProject123",
+      },
+    })
     .then(function (response) {
       const ret = response.data;
       console.log(ret);
@@ -46,20 +47,15 @@ app.get("/statisticsData", async function (req, res) {
   }
   for (let i = 0; i < 6; i++) {
     await axios
-      .get(
-        "https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" +
-          (i + 1) +
-          "&resourceSpec=Grupa9Status",
-        {
-          headers: {
-            accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
-          },
-          auth: {
-            username: "IoTGrupa9",
-            password: "IoTProject123",
-          },
-        }
-      )
+      .get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Status", {
+        headers: {
+          accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+        },
+        auth: {
+          username: "IoTGrupa9",
+          password: "IoTProject123",
+        },
+      })
       .then(function (response) {
         const ret = response.data;
         //console.log(ret)
@@ -149,9 +145,190 @@ app.get("/statisticsData", async function (req, res) {
     element = element / allDatesAcrossSensors.length;
   });
 
-  console.log(allValues)
+  console.log(allValues);
 
   return res.json(allValues);
+});
+
+// export interface ParkingSpace {
+//   id: string;
+//   lat: number;
+//   lng: number;
+//   disabled: boolean;
+//   taken: boolean;
+//   reserved: boolean;
+// }
+
+app.get("/getParkingSpacesData", async function (req, res) {
+  // kreiraj polje senzora koje dohvacam
+  let parkingSpacesData = [];
+  for (let i = 0; i < 6; i++) {
+    parkingSpace = {
+      id: "Grupa9UltrazvucniSenzor" + (i + 1),
+      lat: -1,
+      lng: -1,
+      disabled: false,
+      taken: false,
+      reserved: false,
+    };
+
+    parkingSpacesData.push(parkingSpace);
+  }
+
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+
+  axios.defaults.httpsAgent = httpsAgent;
+
+  /*********************************************** */
+  /******************Latitude********************* */
+  /*********************************************** */
+  for (let i = 0; i < 6; i++) {
+    let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Latitude", {
+      headers: {
+        accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+      },
+      auth: {
+        username: "IoTGrupa9",
+        password: "IoTProject123",
+      },
+    });
+
+    let arrayOfValues = response.data.contentNodes;
+
+    parkingSpacesData.forEach((ps) => {
+      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
+        ps.lat = arrayOfValues[arrayOfValues.length - 1].value;
+      }
+    });
+    // console.log("Latitude...");
+    // console.log("lastValueForSensor:", arrayOfValues[arrayOfValues.length - 1].value);
+    // console.log("sensorSpec:", arrayOfValues[arrayOfValues.length - 1].source.sensorSpec);
+    // console.log("----------------");
+  }
+
+  /*********************************************** */
+  /******************Longitude******************** */
+  /*********************************************** */
+  for (let i = 0; i < 6; i++) {
+    let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Longitude", {
+      headers: {
+        accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+      },
+      auth: {
+        username: "IoTGrupa9",
+        password: "IoTProject123",
+      },
+    });
+
+    let arrayOfValues = response.data.contentNodes;
+
+    parkingSpacesData.forEach((ps) => {
+      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
+        ps.lng = arrayOfValues[arrayOfValues.length - 1].value;
+      }
+    });
+    // console.log("Longitude...");
+    // console.log("lastValueForSensor:", arrayOfValues[arrayOfValues.length - 1].value);
+    // console.log("sensorSpec:", arrayOfValues[arrayOfValues.length - 1].source.sensorSpec);
+    // console.log("----------------");
+  }
+
+  /*********************************************** */
+  /******************ForDisabled****************** */
+  /*********************************************** */
+  for (let i = 0; i < 6; i++) {
+    let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9ForDisabled", {
+      headers: {
+        accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+      },
+      auth: {
+        username: "IoTGrupa9",
+        password: "IoTProject123",
+      },
+    });
+
+    let arrayOfValues = response.data.contentNodes;
+
+    parkingSpacesData.forEach((ps) => {
+      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
+        if (arrayOfValues[arrayOfValues.length - 1].value == 0) {
+          ps.disabled = false;
+        } else {
+          ps.disabled = true;
+        }
+      }
+    });
+    // console.log("ForDisabled...");
+    // console.log("lastValueForSensor:", arrayOfValues[arrayOfValues.length - 1].value);
+    // console.log("sensorSpec:", arrayOfValues[arrayOfValues.length - 1].source.sensorSpec);
+    // console.log("----------------");
+  }
+
+  /*********************************************** */
+  /*********************Status******************** */
+  /*********************************************** */
+  for (let i = 0; i < 6; i++) {
+    let response = await axios.get(
+      "https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Status&latestNCount=1",
+      {
+        headers: {
+          accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
+        },
+        auth: {
+          username: "IoTGrupa9",
+          password: "IoTProject123",
+        },
+      }
+    );
+
+    if (!response.data.contentNodes) {
+      parkingSpacesData.forEach((ps) => {
+        let tempId = "Grupa9UltrazvucniSenzor" + (i + 1);
+        if (ps.id == tempId) {
+          ps.taken = false;
+          ps.reserved = false;
+        }
+      });
+    } else {
+      let arrayOfValues = response.data.contentNodes;
+
+      // 0 -> free
+      // 1 -> taken
+      // 2 -> reserved
+
+      // export interface ParkingSpace {
+      //   id: string;
+      //   lat: number;
+      //   lng: number;
+      //   disabled: boolean;
+      //   taken: boolean;
+      //   reserved: boolean;
+      // }
+
+      parkingSpacesData.forEach((ps) => {
+        if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
+          if (arrayOfValues[arrayOfValues.length - 1].value == 0) {
+            ps.taken = false;
+            ps.reserved = false;
+          } else if (arrayOfValues[arrayOfValues.length - 1].value == 1) {
+            ps.taken = true;
+            ps.reserved = false;
+          } else {
+            ps.taken = false;
+            ps.reserved = true;
+          }
+        }
+      });
+      // console.log("Status...");
+      // console.log("lastValueForSensor:", arrayOfValues[arrayOfValues.length - 1].value);
+      // console.log("sensorSpec:", arrayOfValues[arrayOfValues.length - 1].source.sensorSpec);
+      // console.log("----------------");
+    }
+  }
+
+  return res.json(parkingSpacesData);
 });
 
 app.listen(port, () => {

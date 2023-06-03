@@ -1,0 +1,19 @@
+<mat-dialog-content>
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <div>
+    <p>{{ content }}</p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    color="primary"
+    [mat-dialog-close]="returnData"
+    class="confirm-button"
+  >
+    Potvrdi
+  </button>
+  <button mat-button color="warn" (click)="dialogRef.close()">
+    Odustani
+  </button>
+</mat-dialog-actions>
