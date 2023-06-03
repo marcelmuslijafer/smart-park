@@ -34,7 +34,8 @@ export class MapTabComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.mapTabService.getParkingSpaces();
+    // this.mapTabService.getParkingSpaces();
+    this.mapTabService.startPeriodicCalls();
   }
 
   ngOnDestroy(): void {

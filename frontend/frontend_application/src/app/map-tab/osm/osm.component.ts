@@ -31,9 +31,11 @@ export class OSMComponent implements OnInit, OnDestroy {
     this.parkingSpacesSubject = this.mapTabService
       .getParkingSpacesSubject()
       .subscribe((parkingSpaces: ParkingSpace[]) => {
+        this.layers = [];
+
         for (let ps of parkingSpaces) {
           let markerIcon = redIcon;
-          console.log('tu');
+          // console.log('tu');
           if (ps.reserved) {
             markerIcon = yellowIcon;
           } else if (!ps.taken) {
@@ -77,21 +79,31 @@ export class OSMComponent implements OnInit, OnDestroy {
     }
 
     if (parkingSpace.reserved) {
-      console.log('Mjesto je već rezervirano!');
-      this.openInfoModal('Mjesto je već rezervirano!');
+      console.log('Mjesto je već rezervirano, otkazati rezervaciju!');
+      this.openConfirmationModal(
+        'Mjesto je rezervirano, želite li otkazati rezervaciju? ' +
+          parkingSpace.id,
+        parkingSpace.id,
+        true
+      );
       return;
     }
 
     console.log('Rezerviraj senzor: ', parkingSpace.id);
     this.openConfirmationModal(
-      'Želite li rezervirati parkirno mjesto?',
-      parkingSpace.id
+      'Želite li rezervirati parkirno mjesto? ' + parkingSpace.id,
+      parkingSpace.id,
+      false
     );
 
     return;
   }
 
-  async openConfirmationModal(content: string, parkingSpaceId: string) {
+  async openConfirmationModal(
+    content: string,
+    parkingSpaceId: string,
+    unreserve: boolean
+  ) {
     const dialogRef = this.dialog.open(ConfirmReservationModalComponent, {
       height: 'auto',
       data: {
@@ -105,17 +117,22 @@ export class OSMComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(async (returnedData) => {
       if (returnedData) {
-        console.log('Rezerviraj mi: ', parkingSpaceId);
-        // let result = await this.amenitiesService.deleteAmenityById(
-        //   returnedData.amenityId
-        // );
+        console.log('Rezerviraj mi: ', returnedData.parkingSpaceId);
+        let result = await this.mapTabService.reserveOrUnreserveParkingSpace(
+          returnedData.parkingSpaceId,
+          unreserve
+        );
 
-        // if (result) {
-        //   this.openInfoModal('Sadržaj uspješno obrisan.');
-        //   this.amenitiesService.getAmenities();
-        // } else {
-        //   this.openInfoModal('Nismo uspjeli obrisati sadržaj.');
-        // }
+        if (result) {
+          if (!unreserve) {
+            this.openInfoModal('Uspješna rezervacija mjesta.');
+          } else {
+            this.openInfoModal('Uspješno otkazana rezervacija.');
+          }
+          this.mapTabService.getParkingSpaces();
+        } else {
+          this.openInfoModal('Nismo uspjeli obraditi vaš zahtjev.');
+        }
       } else {
         console.log('Otkazana rezervacija.');
       }

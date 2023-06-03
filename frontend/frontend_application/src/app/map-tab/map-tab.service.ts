@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, lastValueFrom } from 'rxjs';
+import { interval } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 
 import { ParkingSpace } from './map-tab.types';
 import { HttpClient } from '@angular/common/http';
@@ -10,12 +12,21 @@ import { HttpClient } from '@angular/common/http';
 export class MapTabService {
   private LOCAL_DEV = true;
   private apiUrl = 'http://localhost:3000/';
+  private shouldContinue: boolean = true;
 
   private parkingSpacesSubject: Subject<ParkingSpace[]> = new Subject<
     ParkingSpace[]
   >();
 
   constructor(private http: HttpClient) {}
+
+  startPeriodicCalls() {
+    interval(10000) // Slanje poziva svakih 10 sekundi
+      .pipe(takeWhile(() => this.shouldContinue))
+      .subscribe(() => {
+        this.getParkingSpaces(); // Poziv vaše metode
+      });
+  }
 
   /****************************************************
    *                 SUBJECTS                         *
@@ -32,6 +43,7 @@ export class MapTabService {
     }
 
     try {
+      console.log('Dohvacam podatke...');
       let toPromise = this.http.get<ParkingSpace[]>(
         this.apiUrl + 'getParkingSpacesData'
       );
@@ -44,6 +56,27 @@ export class MapTabService {
     }
 
     return;
+  }
+
+  async reserveOrUnreserveParkingSpace(
+    parkingSpaceId: string,
+    unreserve: boolean
+  ) {
+    console.log('Rezervacija parkirnog mjesta:', parkingSpaceId);
+    let path = 'reserveParkingSpace';
+    // const params = new HttpParams().set('parkingSpaceId', parkingSpaceId);
+    const data = { parkingSpaceId: parkingSpaceId, unreserve: unreserve };
+
+    try {
+      let toPromise = this.http.post(this.apiUrl + path, data);
+      const responseLastValue = await lastValueFrom(toPromise);
+
+      console.log('responseLastValue:', responseLastValue);
+      return true;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
   }
 
   dummyFreeParkingSpaces: ParkingSpace[] = [

@@ -4,9 +4,40 @@ var axios = require("axios");
 const app = express();
 const port = 3000;
 
+const mqtt = require("mqtt");
+// mqtt://161.53.19.19:56883/grupa9/senzor1/reserve/
+// const mqttBrokerUrl = "mqtt://mqtt.example.com"; // Zamijenite s pravom MQTT adresom
+const mqttBrokerUrl = "mqtt://161.53.19.19:56883";
+const mqttClient = mqtt.connect(mqttBrokerUrl);
+
+mqttClient.on("connect", () => {
+  console.log("MQTT povezan");
+});
+
 const cors = require("cors");
 
 app.use(cors());
+app.use(express.json());
+
+// mqtt://161.53.19.19:56883/grupa9/senzor1/reserve/
+app.post("/reserveParkingSpace", (req, res) => {
+  const parkingSpaceId = req.body.parkingSpaceId;
+  const unreserve = req.body.unreserve;
+  const sensorNumber = parkingSpaceId[parkingSpaceId.length - 1];
+
+  const topic = "grupa9/senzor" + sensorNumber + "/reserve"; // Zamijenite s pravom MQTT temom
+  const message = unreserve ? "unreserve!" : "reserve!"; // Zamijenite s pravom MQTT porukom
+
+  mqttClient.publish(topic, message, (err) => {
+    if (err) {
+      console.error("Greška prilikom slanja MQTT poruke:", err);
+      res.sendStatus(500);
+    } else {
+      console.log("MQTT poruka poslana");
+      res.sendStatus(204);
+    }
+  });
+});
 
 app.get("/", (req, res) => {
   const httpsAgent = new https.Agent({
@@ -162,7 +193,7 @@ app.get("/statisticsData", async function (req, res) {
 app.get("/getParkingSpacesData", async function (req, res) {
   // kreiraj polje senzora koje dohvacam
   let parkingSpacesData = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     parkingSpace = {
       id: "Grupa9UltrazvucniSenzor" + (i + 1),
       lat: -1,
@@ -184,7 +215,7 @@ app.get("/getParkingSpacesData", async function (req, res) {
   /*********************************************** */
   /******************Latitude********************* */
   /*********************************************** */
-  for (let i = 0; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Latitude", {
       headers: {
         accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
@@ -198,8 +229,8 @@ app.get("/getParkingSpacesData", async function (req, res) {
     let arrayOfValues = response.data.contentNodes;
 
     parkingSpacesData.forEach((ps) => {
-      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
-        ps.lat = arrayOfValues[arrayOfValues.length - 1].value;
+      if (ps.id == arrayOfValues[0].source.sensorSpec) {
+        ps.lat = arrayOfValues[0].value;
       }
     });
     // console.log("Latitude...");
@@ -211,7 +242,7 @@ app.get("/getParkingSpacesData", async function (req, res) {
   /*********************************************** */
   /******************Longitude******************** */
   /*********************************************** */
-  for (let i = 0; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Longitude", {
       headers: {
         accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
@@ -225,8 +256,8 @@ app.get("/getParkingSpacesData", async function (req, res) {
     let arrayOfValues = response.data.contentNodes;
 
     parkingSpacesData.forEach((ps) => {
-      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
-        ps.lng = arrayOfValues[arrayOfValues.length - 1].value;
+      if (ps.id == arrayOfValues[0].source.sensorSpec) {
+        ps.lng = arrayOfValues[0].value;
       }
     });
     // console.log("Longitude...");
@@ -238,7 +269,7 @@ app.get("/getParkingSpacesData", async function (req, res) {
   /*********************************************** */
   /******************ForDisabled****************** */
   /*********************************************** */
-  for (let i = 0; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     let response = await axios.get("https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9ForDisabled", {
       headers: {
         accept: "application/vnd.ericsson.m2m.output+json;version=1.1",
@@ -252,8 +283,8 @@ app.get("/getParkingSpacesData", async function (req, res) {
     let arrayOfValues = response.data.contentNodes;
 
     parkingSpacesData.forEach((ps) => {
-      if (ps.id == arrayOfValues[arrayOfValues.length - 1].source.sensorSpec) {
-        if (arrayOfValues[arrayOfValues.length - 1].value == 0) {
+      if (ps.id == arrayOfValues[0].source.sensorSpec) {
+        if (arrayOfValues[0].value == 0) {
           ps.disabled = false;
         } else {
           ps.disabled = true;
@@ -269,7 +300,7 @@ app.get("/getParkingSpacesData", async function (req, res) {
   /*********************************************** */
   /*********************Status******************** */
   /*********************************************** */
-  for (let i = 0; i < 6; i++) {
+  for (let i = 1; i < 7; i++) {
     let response = await axios.get(
       "https://161.53.19.19:56443/m2m/data?sensorSpec=Grupa9UltrazvucniSenzor" + (i + 1) + "&resourceSpec=Grupa9Status&latestNCount=1",
       {
