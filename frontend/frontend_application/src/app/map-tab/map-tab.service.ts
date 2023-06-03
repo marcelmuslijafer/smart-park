@@ -18,10 +18,11 @@ export class MapTabService {
     ParkingSpace[]
   >();
 
+  private loadingSpinnerSubject: Subject<boolean> = new Subject<boolean>();
   constructor(private http: HttpClient) {}
 
   startPeriodicCalls() {
-    interval(10000) // Slanje poziva svakih 10 sekundi
+    interval(15000) // Slanje poziva svakih 10 sekundi
       .pipe(takeWhile(() => this.shouldContinue))
       .subscribe(() => {
         this.getParkingSpaces(); // Poziv vaše metode
@@ -35,6 +36,10 @@ export class MapTabService {
     return this.parkingSpacesSubject.asObservable();
   }
 
+  getLoadingSpinnerSubject() {
+    return this.loadingSpinnerSubject.asObservable();
+  }
+
   /****************************************************/
   async getParkingSpaces() {
     if (!this.LOCAL_DEV) {
@@ -43,6 +48,7 @@ export class MapTabService {
     }
 
     try {
+      this.loadingSpinnerSubject.next(true);
       console.log('Dohvacam podatke...');
       let toPromise = this.http.get<ParkingSpace[]>(
         this.apiUrl + 'getParkingSpacesData'
@@ -50,6 +56,7 @@ export class MapTabService {
       const responseLastValue = await lastValueFrom(toPromise);
 
       console.log('responseLastValue:', responseLastValue);
+      this.loadingSpinnerSubject.next(false);
       this.parkingSpacesSubject.next(responseLastValue);
     } catch (error) {
       console.error('Error:', error);

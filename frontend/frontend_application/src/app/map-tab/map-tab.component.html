@@ -12,6 +12,9 @@
         <span>{{ greenCircleNumber }}</span>
       </div>
     </div>
+    <div *ngIf="loadingSpinnerData" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
   </div>
   <div>
     <app-osm></app-osm>
