@@ -43,11 +43,11 @@ void registerParkingSpot() {
   // Set deviceId
   doc["deviceId"] = "Grupa9GatewayGroup1";
 
-  doc["header"]["timeStamp"] = getTime();
+  doc["header"]["timeStamp"] = getTime() * 1000;
 
-  doc["body"]["Grupa9UltrazvucniSenzor1"]["Grupa9Latitude"] = 45.800935;
-  doc["body"]["Grupa9UltrazvucniSenzor1"]["Grupa9Longitude"] =  15.970574;
-  doc["body"]["Grupa9UltrazvucniSenzor1"]["Grupa9ForDisabled"] = 0;
+  doc["body"]["Grupa9UltrazvucniSenzor7"]["Grupa9Latitude"] = 45.800935;
+  doc["body"]["Grupa9UltrazvucniSenzor7"]["Grupa9Longitude"] =  15.970574;
+  doc["body"]["Grupa9UltrazvucniSenzor7"]["Grupa9ForDisabled"] = 0;
 
   String serializedData;
   serializeJson(doc, serializedData);
@@ -59,15 +59,11 @@ void storeParkingSpotStatus(int status) {
   StaticJsonDocument<200> doc;
 
   doc["deviceId"] = "Grupa9GatewayGroup1";
-  doc["header"]["timeStamp"] = getTime();
-  doc["body"]["Grupa9UltrazvucniSenzor1"]["Grupa9Status"] = status;
+  doc["header"]["timeStamp"] = getTime() * 1000;
+  doc["body"]["Grupa9UltrazvucniSenzor7"]["Grupa9Status"] = status;
 
   String serializedData;
   serializeJson(doc, serializedData);
-
-  String pretty;
-  serializeJsonPretty(doc, pretty);
-  Serial.println(pretty);
 
   postData(serializedData);
 }

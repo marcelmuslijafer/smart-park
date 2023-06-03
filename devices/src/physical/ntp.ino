@@ -8,9 +8,5 @@ unsigned long long getTime() {
     return -1;
   }
   time(&now);
-  // Serial.print("Time &now: ");
-  // Serial.print(now);
-  // Serial.print("Time time(&now): ");
-  // Serial.println(time(&now));
   return now;
 }

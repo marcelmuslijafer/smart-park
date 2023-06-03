@@ -27,7 +27,6 @@ bool isParkingSpotFree()
 {
   bool free = readDistance() > MINIMAL_PROXIMITY ? true : false;
 
-  // Serial.println("Checking parking spot status...");
   delay(1000);
 
   if (!free && readDistance() < MINIMAL_PROXIMITY)

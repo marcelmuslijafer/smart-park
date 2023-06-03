@@ -10,7 +10,7 @@ void setup()
   initProximitySensor();
   initLeds();
   connectToWiFi(wifiSsid, wifiPassword); // set wifi data in http.h
-  configTime(0, 0, ntpServer);
+  configTime(TIMEZONE, 0, ntpServer);
   registerParkingSpot();
   storeParkingSpotStatus(SPOT_FREE);
   connectToMqttBroker();
