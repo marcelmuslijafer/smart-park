@@ -2,9 +2,9 @@ import requests
 import time
 
 
-def register_sensor(device, latitude, longitude, is_disabled):
+def register_sensor(device_id, latitude, longitude, is_disabled):
 
-    print("Registering sensor " + device + ".")
+    print("Registering sensor " + device_id + ".")
 
     url = 'https://161.53.19.19:56443/m2m/data'
     timestamp = time.time() * 1000
@@ -18,7 +18,7 @@ def register_sensor(device, latitude, longitude, is_disabled):
             "timeStamp": timestamp
         },
         "body": {
-            device: {
+            device_id: {
                 "Grupa9Latitude": latitude,
                 "Grupa9Longitude": longitude,
                 "Grupa9ForDisabled": is_disabled
