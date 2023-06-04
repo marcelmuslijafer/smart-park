@@ -6,11 +6,9 @@
   align-items: center;
   height: 90vh;
   width: 100%;
+  position: relative; /* Dodano */
 }
 
-/* ===================================== */
-/* =============== TITLE =============== */
-/* ===================================== */
 .rectangle {
   display: flex;
   align-items: center;
@@ -19,13 +17,13 @@
   border-radius: 10px;
   background-color: #e1f5fe;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative; /* Dodano */
 }
 
 .text {
   margin-right: 16px;
   color: #01579b;
   font-weight: bold;
-  /* font-size: 1.5rem; */
 }
 
 .circles {
@@ -51,4 +49,25 @@
 .green {
   background-color: #66bb6a;
 }
-/* ===================================== */
+
+.spinner-container {
+  position: absolute;
+  top: 50%;
+  left: -40px; /* Prilagodite vrijednost prema potrebi */
+  transform: translateY(-50%);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #1e88e5; /* Promijenjena boja u plavu */
+  border-top-color: #01579b; /* Promijenjena boja u tamnoplavu */
+  border-radius: 50%;
+  animation: spinner-animation 1s linear infinite;
+}
+
+@keyframes spinner-animation {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -11,17 +11,28 @@ import { ParkingSpace } from './map-tab.types';
 export class MapTabComponent implements OnInit, OnDestroy {
   blueCircleNumber: number = 0;
   greenCircleNumber: number = 0;
+  loadingSpinnerData = false;
 
   FreeParkingSpacesSubscription: Subscription;
+  LoadingSpinnerSubscription: Subscription;
 
   constructor(private mapTabService: MapTabService) {}
 
   ngOnInit(): void {
+    this.LoadingSpinnerSubscription = this.mapTabService
+      .getLoadingSpinnerSubject()
+      .subscribe((value) => {
+        this.loadingSpinnerData = value;
+      });
+
     this.FreeParkingSpacesSubscription = this.mapTabService
       .getParkingSpacesSubject()
       .subscribe((parkingSpace: ParkingSpace[]) => {
+        this.blueCircleNumber = 0;
+        this.greenCircleNumber = 0;
+
         parkingSpace.forEach((ps) => {
-          if (!ps.taken) {
+          if (!ps.taken && !ps.reserved) {
             if (ps.disabled) {
               this.blueCircleNumber++;
             } else {
@@ -31,7 +42,8 @@ export class MapTabComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.mapTabService.getParkingSpaces();
+    // this.mapTabService.getParkingSpaces();
+    this.mapTabService.startPeriodicCalls();
   }
 
   ngOnDestroy(): void {

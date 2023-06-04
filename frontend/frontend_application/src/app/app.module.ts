@@ -16,10 +16,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { StatisticsTabComponent } from './statistics-tab/statistics-tab.component';
 import { NgChartsModule } from 'ng2-charts';
-import { MatSelectModule } from '@angular/material/select'
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { ConfirmReservationModalComponent } from './map-tab/osm/confirm-reservation-modal/confirm-reservation-modal.component';
+import { ReservationInfoModalComponent } from './map-tab/osm/reservation-info-modal/reservation-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     NavigationTabsComponent,
     OSMComponent,
     StatisticsTabComponent,
+    ConfirmReservationModalComponent,
+    ReservationInfoModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     LeafletModule,
     NgChartsModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
