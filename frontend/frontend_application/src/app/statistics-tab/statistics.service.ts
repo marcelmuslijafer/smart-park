@@ -17,6 +17,10 @@ export class StatisticsService {
       tooltip: {
         enabled: false,
       },
+      title: {
+        display: true,
+        text: "Number of occupied parking spaces per day"
+      }
     },
     scales: {
       yAxis: {
