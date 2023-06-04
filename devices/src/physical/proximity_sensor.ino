@@ -20,9 +20,17 @@ float readDistance() {
   // Calculate the distance
   float distance = duration * SOUND_SPEED / 2;
 
-  // Prints the distance in the Serial Monitor
-  // Serial.print("Distance (cm): ");
-  // Serial.println(distance);
-
   return distance;
+}
+
+bool isParkingSpotFree()
+{
+  bool free = readDistance() > MINIMAL_PROXIMITY ? true : false;
+
+  delay(1000);
+
+  if (!free && readDistance() < MINIMAL_PROXIMITY)
+    return false;
+
+  return true;
 }

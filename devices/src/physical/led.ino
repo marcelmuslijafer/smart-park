@@ -16,3 +16,10 @@ void turnLedOff(int led) {
 void switchLedStatus(int led) {
   digitalWrite(led, !digitalRead(led));
 }
+
+void ledBlink(int led)
+{
+  turnLedOn(led);
+  delay(BLINK_DELAY);
+  turnLedOff(led);
+}
