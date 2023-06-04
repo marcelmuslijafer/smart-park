@@ -31,12 +31,13 @@ def register_sensor(device_id, latitude, longitude, is_disabled):
 
 def create_sensor_reading(device, status):
 
+    if status == 2:
+        return
+
     if status == 0:
         print("Sensor " + device + " noticed that its parking space is now free.")
     elif status == 1:
         print("Sensor " + device + " noticed that its parking space is now taken.")
-    else:
-        print("Sensor " + device + " noticed that its parking space is now reserved.")
 
     url = 'https://161.53.19.19:56443/m2m/data'
     timestamp = time.time() * 1000
