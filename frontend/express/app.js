@@ -87,9 +87,10 @@ app.post("/getStatisticsData", async function (req, res) {
     var allDates = [];
     var allDatesAcrossSensors = [];
     var allValues = [];
-    var allFilteredData = [];
+    var writtenInHour = [];
     for (let i = 0; i < 24; i++) {
       allValues[i] = 0;
+      writtenInHour[i] = 0;
     }
     for (let i = 1; i < 7; i++) {
       await axios
@@ -132,9 +133,15 @@ app.post("/getStatisticsData", async function (req, res) {
     }
     for (let i = 0; i < allData.length; i++) {
       allDates = [];
+      for(let x = 0; x < 24; x++) {
+        writtenInHour[x] = 0;
+      }
       for (let j = 0; j < allData[i].length; j++) {
         var date = new Date(allData[i][j].time).toISOString().split("T")[0];
         date = new Date(date);
+        if(writtenInHour[date.getDay()] == 1) {
+          continue;
+        }
         if (!allDatesAcrossSensors.includes(date.toDateString())) {
           allDatesAcrossSensors.push(date.toDateString());
         }
@@ -144,6 +151,7 @@ app.post("/getStatisticsData", async function (req, res) {
             var hours = new Date(allData[i][j].time).getHours();
             for (let x = 0; x < hours; x++) {
               allValues[x]++;
+              writtenInHour[x] = 1;
             }
           } else {
             let index = -1;
@@ -158,12 +166,14 @@ app.post("/getStatisticsData", async function (req, res) {
             if (index == -1) {
               for (let x = hours; x < 24; x++) {
                 allValues[x]++;
+                writtenInHour[x] = 1;
               }
               break;
             } else {
               var hoursNeighbour = new Date(allData[i][index].time).getHours();
               for (let x = hours; x < hoursNeighbour; x++) {
                 allValues[x]++;
+                writtenInHour[x] = 1;
               }
             }
           }
@@ -179,12 +189,14 @@ app.post("/getStatisticsData", async function (req, res) {
           if (index == -1) {
             for (let x = hours; x < 24; x++) {
               allValues[x]++;
+              writtenInHour[x] = 1;
             }
             break;
           } else {
             var hoursNeighbour = new Date(allData[i][index].time).getHours();
             for (let x = hours; x < hoursNeighbour; x++) {
               allValues[x]++;
+              writtenInHour[x] = 1;
             }
           }
         }
