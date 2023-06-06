@@ -33,6 +33,8 @@ void loop()
       storeParkingSpotStatus(SPOT_TAKEN);
       previousSpotFree = currentSpotFree;
     }
+
+    sentReserved = false;
   }
   else
   {
